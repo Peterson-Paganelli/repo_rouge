@@ -14,7 +14,7 @@ enum CellType {
     STAIRS = 4
 };
 
-struct player {
+struct Player {
     int x, y;         // Posicao
     int character;    // Skin (ASCII)
     int health;       // Vida
