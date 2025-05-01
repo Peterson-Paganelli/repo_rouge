@@ -1,3 +1,6 @@
+#ifndef STRUCTS_H
+#define STRUCTS_H
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -21,7 +24,7 @@ struct Player {
     int strength;     // Forca
     int level;        // Nivel
     int exp;          // Experiencia
-    vector<string> inventory; // Inventario
+    std::vector<std::string> inventory; // Inventario
     int score;        // Pontuacao
 };
 
@@ -36,5 +39,7 @@ struct Enemy {
 
 struct Item {
     int x, y;
-    string type;
+    std::string type;
 };
+
+#endif // STRUCTS_H
