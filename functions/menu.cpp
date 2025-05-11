@@ -12,8 +12,6 @@ int menu() {
     cin >> op;
     switch (op) {
         case 1:
-            cout << "Jogo iniciado\n";
-            Sleep(1000);
             system("cls");
             return op;
         case 2: {
