@@ -17,6 +17,13 @@ enum CellType {
     STAIRS = 4
 };
 
+enum MonsterType {
+    GOBLIN = 1,
+    ORC,
+    TROLL,
+    DRAGON
+};
+
 struct Player {
     char name;
     int classType;
@@ -32,7 +39,7 @@ struct Player {
 
 struct Enemy {
     int x, y;
-    int typeMonster; //Skin (ASCII)
+    MonsterType type; // Type of monster
     int health;
     int strength;
     int level;

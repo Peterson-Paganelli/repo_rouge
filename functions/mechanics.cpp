@@ -47,15 +47,61 @@ void movePlayer(Player& player, char direction, vector<vector<int>>& map) {
     player.y = newY;
 }
 
-void moveEnemies(Enemy& enemy, const vector<vector<int>>& map) {
-    int newX = enemy.x, newY = enemy.y;
+void moveEnemies(vector<Enemy>& enemies, const vector<vector<int>>& map) {
+    for (auto& enemy : enemies) {
+        int newX = enemy.x, newY = enemy.y;
 
-    
-    if(newX >= 0 && newX < static_cast<int>(map.size()) && newY >= 0 && newY < static_cast<int>(map[0].size())) {
-        if(map[newX][newY] == WALL) {
-            cout << "Voce Bateu em uma Parede!!!!\n";
-            Sleep(200);
-            return;
+        // Generate random direction: 0 = up, 1 = down, 2 = left, 3 = right
+        int direction = rand() % 4;
+        switch (direction) {
+            case 0: newX--; break; // Up
+            case 1: newX++; break; // Down
+            case 2: newY--; break; // Left
+            case 3: newY++; break; // Right
+        }
+
+        // Check if the new position is within bounds and not a wall
+        if (newX >= 0 && newX < static_cast<int>(map.size()) &&
+            newY >= 0 && newY < static_cast<int>(map[0].size()) &&
+            map[newX][newY] != WALL) {
+            enemy.x = newX;
+            enemy.y = newY;
         }
     }
+}
+
+Enemy createMonster(MonsterType type, int mapWidth, int mapHeight) {
+    Enemy enemy;
+    enemy.x = rand() % mapWidth;
+    enemy.y = rand() % mapHeight;
+    enemy.type = type;
+
+    switch (type) {
+        case GOBLIN:
+            enemy.health = 10;
+            enemy.strength = 3;
+            enemy.level = 1;
+            enemy.expReward = 5;
+            break;
+        case ORC:
+            enemy.health = 20;
+            enemy.strength = 5;
+            enemy.level = 2;
+            enemy.expReward = 10;
+            break;
+        case TROLL:
+            enemy.health = 30;
+            enemy.strength = 7;
+            enemy.level = 3;
+            enemy.expReward = 15;
+            break;
+        case DRAGON:
+            enemy.health = 50;
+            enemy.strength = 10;
+            enemy.level = 5;
+            enemy.expReward = 50;
+            break;
+    }
+
+    return enemy;
 }

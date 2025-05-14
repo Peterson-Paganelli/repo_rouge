@@ -1,6 +1,9 @@
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
 
 #include "structs.cpp"
 #include "./functions/menu.cpp"
@@ -62,34 +65,69 @@ int main()
     };
     //FIM: Inicialização do jogador
 
-    while(true){
+    // Initialize enemies
+    vector<Enemy> enemies;
+    srand(time(0)); // Seed for random number generation
+    for (int i = 0; i < 5; i++) { // Create 5 enemies
+        MonsterType type = static_cast<MonsterType>(rand() % 4 + 1); // Random monster type
+        Enemy enemy = createMonster(type, currentMap->size(), (*currentMap)[0].size());
+
+        // Ensure enemy is placed on a FLOOR cell
+        if ((*currentMap)[enemy.x][enemy.y] == FLOOR) {
+            enemies.push_back(enemy);
+        } else {
+            i--; // Retry if position is invalid
+        }
+    }
+
+    int enemyMoveCounter = 0; // Counter to control enemy movement
+
+    while (true) {
         ///Posiciona a escrita no inicio do console
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 
-
-
-        
         ///Imprime o jogo: mapa e personagem.
         for (size_t i = 0; i < currentMap->size(); i++) {
             for (size_t j = 0; j < (*currentMap)[i].size(); j++) {
                 if (i == player.x && j == player.y) {
                     cout << char(player.character); // personagem
                 } else {
-                    switch ((*currentMap)[i][j]) {
-                        case 0: cout << " "; break; // caminho
-                        case 1: cout << char(219); break; // parede
+                    bool isEnemy = false;
+                    for (const auto& enemy : enemies) {
+                        if (i == enemy.x && j == enemy.y) {
+                            cout << 'E'; // Display enemy
+                            isEnemy = true;
+                            break;
+                        }
+                    }
+                    if (!isEnemy) {
+                        switch ((*currentMap)[i][j]) {
+                            case 0: cout << " "; break; // caminho
+                            case 1: cout << char(219); break; // parede
+                        }
                     }
                 }
             }
             cout << "\n";
         } //fim for mapa
 
-        ///executa os movimentos
-        if ( _kbhit() ){
+        /// Check for player input
+        if (_kbhit()) {
             tecla = getch();
             movePlayer(player, tecla, *currentMap);
         }
 
+        /// Control enemy movement with a counter
+        if (enemyMoveCounter >= 10) { // Adjust the value to control enemy speed
+            moveEnemies(enemies, *currentMap);
+            enemyMoveCounter = 0; // Reset the counter
+        }
+
+        /// Increment the counter
+        enemyMoveCounter++;
+
+        /// Add a small delay to control the game loop speed
+        Sleep(50); // Adjust as needed
     } //fim do laco do jogo
 
     return 0;
