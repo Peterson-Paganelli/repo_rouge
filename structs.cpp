@@ -30,4 +30,21 @@ struct Player {
     std::vector<std::string> inventory;
 };
 
+struct Enemy {
+    int x, y;
+    int typeMonster; //Skin (ASCII)
+    int health;
+    int strength;
+    int level;
+    int expReward;
+};
+
+struct Boss {
+    int typeMonster; //Skin (ASCII)
+    int health;
+    int strength;
+    int level;
+    int expReward;
+};
+
 #endif // STRUCTS_H

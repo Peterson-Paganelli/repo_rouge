@@ -46,3 +46,16 @@ void movePlayer(Player& player, char direction, vector<vector<int>>& map) {
     player.x = newX;
     player.y = newY;
 }
+
+void moveEnemies(Enemy& enemy, const vector<vector<int>>& map) {
+    int newX = enemy.x, newY = enemy.y;
+
+    
+    if(newX >= 0 && newX < static_cast<int>(map.size()) && newY >= 0 && newY < static_cast<int>(map[0].size())) {
+        if(map[newX][newY] == WALL) {
+            cout << "Voce Bateu em uma Parede!!!!\n";
+            Sleep(200);
+            return;
+        }
+    }
+}
