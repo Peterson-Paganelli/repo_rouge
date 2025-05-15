@@ -44,7 +44,7 @@ int main()
     
     cout << "Nome do jogador: ";
     cin >> charName;
-
+    
     system("cls");
     cout << "Jogo iniciado\n";
     Sleep(1000);
@@ -104,6 +104,7 @@ int main()
                         switch ((*currentMap)[i][j]) {
                             case 0: cout << " "; break; // caminho
                             case 1: cout << char(219); break; // parede
+                            case 4: cout << '>'; break; // stairs (change '>' to your desired icon)
                         }
                     }
                 }
@@ -115,6 +116,106 @@ int main()
         if (_kbhit()) {
             tecla = getch();
             movePlayer(player, tecla, *currentMap);
+        }
+
+        /// Check for player-enemy collision and initiate battle
+        for (auto it = enemies.begin(); it != enemies.end(); ++it) {
+            if (player.x == it->x && player.y == it->y) {
+                battle(player, *it);
+                enemies.erase(it); // Remove defeated enemy
+                break;
+            }
+        }
+
+        /// Check if player reached stairs to switch maps
+        if ((*currentMap)[player.x][player.y] == STAIRS) {
+            if (currentMap == &map1) {
+                currentMap = &map2; // Switch to map2
+                player.x = 1; // Reset player position
+                player.y = 1;
+                enemies.clear(); // Clear existing enemies
+
+                // Initialize new enemies for map2
+                for (int i = 0; i < 5; i++) {
+                    MonsterType type = static_cast<MonsterType>(rand() % 4 + 1);
+                    Enemy enemy = createMonster(type, currentMap->size(), (*currentMap)[0].size());
+                    if ((*currentMap)[enemy.x][enemy.y] == FLOOR) {
+                        enemies.push_back(enemy);
+                    } else {
+                        i--;
+                    }
+                }
+
+                system("cls");
+                cout << "Voce subiu as escadas para o proximo nivel!\n";
+                Sleep(2000);
+                system("cls");
+            } else if (currentMap == &map2) {
+                currentMap = &map3; // Switch to map3
+                player.x = 1;
+                player.y = 1;
+                enemies.clear();
+
+                // Initialize new enemies for map3
+                for (int i = 0; i < 7; i++) {
+                    MonsterType type = static_cast<MonsterType>(rand() % 4 + 1);
+                    Enemy enemy = createMonster(type, currentMap->size(), (*currentMap)[0].size());
+                    if ((*currentMap)[enemy.x][enemy.y] == FLOOR) {
+                        enemies.push_back(enemy);
+                    } else {
+                        i--;
+                    }
+                }
+
+                system("cls");
+                cout << "Voce subiu as escadas para o proximo nivel!\n";
+                Sleep(2000);
+                system("cls");
+            }
+        } else if ((*currentMap)[player.x][player.y] == STAIRS_BACK) {
+            if (currentMap == &map3) {
+                currentMap = &map2; // Go back to map2
+                player.x = 9; // Reset player position
+                player.y = 10;
+                enemies.clear();
+
+                // Reinitialize enemies for map2
+                for (int i = 0; i < 5; i++) {
+                    MonsterType type = static_cast<MonsterType>(rand() % 4 + 1);
+                    Enemy enemy = createMonster(type, currentMap->size(), (*currentMap)[0].size());
+                    if ((*currentMap)[enemy.x][enemy.y] == FLOOR) {
+                        enemies.push_back(enemy);
+                    } else {
+                        i--;
+                    }
+                }
+
+                system("cls");
+                cout << "Voce desceu as escadas para o nivel anterior!\n";
+                Sleep(2000);
+                system("cls");
+            } else if (currentMap == &map2) {
+                currentMap = &map1; // Go back to map1
+                player.x = 7; // Reset player position
+                player.y = 15;
+                enemies.clear();
+
+                // Reinitialize enemies for map1
+                for (int i = 0; i < 5; i++) {
+                    MonsterType type = static_cast<MonsterType>(rand() % 4 + 1);
+                    Enemy enemy = createMonster(type, currentMap->size(), (*currentMap)[0].size());
+                    if ((*currentMap)[enemy.x][enemy.y] == FLOOR) {
+                        enemies.push_back(enemy);
+                    } else {
+                        i--;
+                    }
+                }
+
+                system("cls");
+                cout << "Voce desceu as escadas para o nivel anterior!\n";
+                Sleep(2000);
+                system("cls");
+            }
         }
 
         /// Control enemy movement with a counter

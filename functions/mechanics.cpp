@@ -109,3 +109,37 @@ Enemy createMonster(MonsterType type, int mapWidth, int mapHeight) {
 
     return enemy;
 }
+
+void battle(Player& player, Enemy& enemy) {
+    system("cls");
+    cout << "A batalha comecou!\n";
+    Sleep(1000); // Delay to show the start of the battle
+
+    while (player.health > 0 && enemy.health > 0) {
+        // Player attacks
+        cout << "Voce atacou o inimigo!\n";
+        enemy.health -= player.strength;
+        Sleep(1000); // Delay after player's attack
+
+        if (enemy.health <= 0) {
+            cout << "Voce derrotou o inimigo!\n";
+            player.exp += enemy.expReward;
+            player.score += 10; // Example score increment
+            Sleep(1000); // Delay before exiting the battle
+            system("cls");
+            return;
+        }
+
+        // Enemy attacks
+        cout << "O inimigo atacou!\n";
+        player.health -= enemy.strength;
+        Sleep(1000); // Delay after enemy's attack
+
+        if (player.health <= 0) {
+            cout << "Voce foi derrotado!\n";
+            Sleep(2000); // Delay before exiting the game
+            system("cls");
+            exit(0); // End the game
+        }
+    }
+}
