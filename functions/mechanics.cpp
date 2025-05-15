@@ -74,7 +74,7 @@ Enemy createMonster(MonsterType type, int mapWidth, int mapHeight) {
     Enemy enemy;
     enemy.x = rand() % mapWidth;
     enemy.y = rand() % mapHeight;
-    enemy.type = type;
+    enemy.MonsterType = type;
 
     switch (type) {
         case GOBLIN:
@@ -82,24 +82,28 @@ Enemy createMonster(MonsterType type, int mapWidth, int mapHeight) {
             enemy.strength = 3;
             enemy.level = 1;
             enemy.expReward = 5;
+            enemy.displayChar = 'G'; // Goblin
             break;
         case ORC:
             enemy.health = 20;
             enemy.strength = 5;
             enemy.level = 2;
             enemy.expReward = 10;
+            enemy.displayChar = 'O'; // Orc
             break;
         case TROLL:
             enemy.health = 30;
             enemy.strength = 7;
             enemy.level = 3;
             enemy.expReward = 15;
+            enemy.displayChar = 'T'; // Troll
             break;
         case DRAGON:
             enemy.health = 50;
             enemy.strength = 10;
             enemy.level = 5;
             enemy.expReward = 50;
+            enemy.displayChar = 'D'; // Dragon
             break;
     }
 

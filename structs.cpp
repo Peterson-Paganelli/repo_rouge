@@ -16,7 +16,6 @@ enum CellType {
     TRAP = 3,
     STAIRS = 4
 };
-
 enum MonsterType {
     GOBLIN = 1,
     ORC,
@@ -39,11 +38,12 @@ struct Player {
 
 struct Enemy {
     int x, y;
-    MonsterType type; // Type of monster
+    int MonsterType; // Type of monster
     int health;
     int strength;
     int level;
     int expReward;
+    char displayChar; // Character to represent the enemy
 };
 
 struct Boss {

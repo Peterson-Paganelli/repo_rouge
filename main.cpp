@@ -95,7 +95,7 @@ int main()
                     bool isEnemy = false;
                     for (const auto& enemy : enemies) {
                         if (i == enemy.x && j == enemy.y) {
-                            cout << 'E'; // Display enemy
+                            cout << enemy.displayChar; // Display enemy's unique character
                             isEnemy = true;
                             break;
                         }
