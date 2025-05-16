@@ -126,7 +126,7 @@ void battle(Player& player, Enemy& enemy) {
             player.exp += enemy.expReward;
             player.score += 10; // Example score increment
             Sleep(1000); // Delay before exiting the battle
-            system("cls");
+            system("cls"); 
             return;
         }
 

@@ -104,7 +104,8 @@ int main()
                         switch ((*currentMap)[i][j]) {
                             case 0: cout << " "; break; // caminho
                             case 1: cout << char(219); break; // parede
-                            case 4: cout << '>'; break; // stairs (change '>' to your desired icon)
+                            case 4: cout << '>'; break; // stairs
+                            case 5: cout << '<'; break; // backward stairs
                         }
                     }
                 }
@@ -122,7 +123,15 @@ int main()
         for (auto it = enemies.begin(); it != enemies.end(); ++it) {
             if (player.x == it->x && player.y == it->y) {
                 battle(player, *it);
+                // Check if this is the boss (map 3, DRAGON type, 'B' char, or by position)
+                bool isBoss = (currentMap == &map3 && it->displayChar == 'B');
                 enemies.erase(it); // Remove defeated enemy
+                if (isBoss) {
+                    system("cls");
+                    cout << "Parabens! Voce derrotou o chefe final e venceu o jogo!\n";
+                    Sleep(4000);
+                    exit(0);
+                }
                 break;
             }
         }
@@ -166,6 +175,18 @@ int main()
                         i--;
                     }
                 }
+
+                // Add final boss at a fixed position (e.g., [8][10])
+                Enemy boss;
+                boss.x = 8;
+                boss.y = 10;
+                boss.MonsterType = DRAGON;
+                boss.health = 100;
+                boss.strength = 20;
+                boss.level = 10;
+                boss.expReward = 100;
+                boss.displayChar = 'B'; // 'B' for Boss
+                enemies.push_back(boss);
 
                 system("cls");
                 cout << "Voce subiu as escadas para o proximo nivel!\n";
