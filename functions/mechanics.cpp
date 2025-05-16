@@ -49,6 +49,11 @@ void movePlayer(Player& player, char direction, vector<vector<int>>& map) {
 
 void moveEnemies(vector<Enemy>& enemies, const vector<vector<int>>& map) {
     for (auto& enemy : enemies) {
+        // Prevent boss from moving (boss is at [6][3] on map3 and displayChar == 'B')
+        if (enemy.x == 6 && enemy.y == 3 && enemy.displayChar == 'B') {
+            continue;
+        }
+
         int newX = enemy.x, newY = enemy.y;
 
         // Generate random direction: 0 = up, 1 = down, 2 = left, 3 = right

@@ -104,6 +104,7 @@ int main()
                         switch ((*currentMap)[i][j]) {
                             case 0: cout << " "; break; // caminho
                             case 1: cout << char(219); break; // parede
+                            case 3: cout << '^'; break; // trap icon
                             case 4: cout << '>'; break; // stairs
                             case 5: cout << '<'; break; // backward stairs
                         }
@@ -117,6 +118,15 @@ int main()
         if (_kbhit()) {
             tecla = getch();
             movePlayer(player, tecla, *currentMap);
+
+            // Trap logic: lose 10 health if on a trap
+            if ((*currentMap)[player.x][player.y] == TRAP) {
+                player.health -= 10;
+                cout << "Voce caiu em uma armadilha! Vida -10\n";
+                Sleep(1000);
+                // Optional: remove the trap after triggering
+                // (*currentMap)[player.x][player.y] = FLOOR;
+            }
         }
 
         /// Check for player-enemy collision and initiate battle
@@ -176,10 +186,10 @@ int main()
                     }
                 }
 
-                // Add final boss at a fixed position (e.g., [8][10])
+                // Add final boss at a fixed position (e.g., [6][3])
                 Enemy boss;
-                boss.x = 8;
-                boss.y = 10;
+                boss.x = 6; // Changed from 8 to 6
+                boss.y = 3; // Changed from 10 to 3
                 boss.MonsterType = DRAGON;
                 boss.health = 100;
                 boss.strength = 20;
